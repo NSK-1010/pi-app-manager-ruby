@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+# Pi App Manager
+# 2020-2021 Piano Nekomiya
+# Twitter: @PianoCat1010
+
+# 設定
+require 'open-uri'
+require 'fileutils'
+require 'ruby-qml'
+require_relative '/etc/pi-app-manager/config'
+entry_extension = "entry"
+version = 0.1
+
+# 
