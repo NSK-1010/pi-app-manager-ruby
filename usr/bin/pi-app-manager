@@ -7,9 +7,65 @@
 # 設定
 require 'open-uri'
 require 'fileutils'
-require 'ruby-qml'
 require_relative '/etc/pi-app-manager/config'
 entry_extension = "entry"
 version = 0.1
 
-# 
+# インストールとアンインストール
+def install_uninstall
+  system("dpkg -l > /tmp/pi-app-manager/instaledlist.txt")
+  installedlist = File.read("/tmp/pi-app-manager/instaledlist.txt")
+  scripts = Dir.glob("#{scriptdir}/*.#{entry_extension}")
+  require scripts
+  for package in scripts.length do
+    p name
+    p "- " + description
+    if installedlist.include?("#{package_name}") == true then
+      puts "(インストール済み)"
+    else
+      puts "(未インストール)"
+    end
+    p "\n"
+  end
+  puts "インストール・アンインストールしたいソフトウェアを空白で区切って入力してください。"
+  print "> "
+  installpkg = gets.chomp.split(' ')
+  puts "処理開始"
+  for installpkgnum in installpkg.length do
+    if installedlist.include?("#{package_name}") == true then
+      uninstall()
+    else
+      install()
+    end
+  end
+  puts "処理完了"
+end
+
+# アップデート
+def update
+  system("apt update")
+end
+
+# アップグレード
+def upgrade
+  system("apt upgrade")
+end
+
+# welcome
+puts "Welcome!"
+puts "実行したい作業を入力してください。"
+puts <<~EOS
+  install インストールとアンインストール
+  update パッケージリストのアップデート
+  upgrade パッケージのアップグレード
+EOS
+print "> "
+method = gets.chomp
+case method
+  when install
+    install_uninstall()
+  when update
+    update()
+  when upgrade
+    upgrade()
+end
