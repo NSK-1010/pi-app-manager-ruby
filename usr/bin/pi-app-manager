@@ -61,12 +61,12 @@ end
 
 # アップデート
 def update
-  system("apt update")
+  system("apt-get update")
 end
 
 # アップグレード
 def upgrade
-  system("apt upgrade")
+  system("apt-get upgrade")
 end
 
 # welcome
