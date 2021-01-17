@@ -1,0 +1,3 @@
+# PiAppManager Config
+
+scriptdir = "/etc/pi-app-manager/softwares"
