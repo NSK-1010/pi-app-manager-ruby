@@ -38,16 +38,16 @@ def install_uninstall
     p name
     p "- " + description
     if installedlist.include?("#{package_name}") == true then
-      puts "(インストール済み)"
+      puts "(Installed)"
     else
-      puts "(未インストール)"
+      puts "(Not installed)"
     end
     p "\n"
   end
-  puts "インストール・アンインストールしたいソフトウェアを空白で区切って入力してください。"
+  puts "Enter the software you want to install / uninstall, separated by spaces."
   print "> "
   installpkg = gets.chomp.split(' ')
-  puts "処理開始"
+  puts "Starting..."
   for installpkgnum in installpkg.length do
     if installedlist.include?("#{package_name}") == true then
       uninstall()
@@ -55,7 +55,7 @@ def install_uninstall
       install()
     end
   end
-  puts "処理完了"
+  puts "Finished"
   File.delete(tmpdir + "/instaledlist.txt")
 end
 
@@ -72,12 +72,12 @@ end
 # welcome
 Dir.mkdir(tmpdir)
 puts "Welcome!"
-puts "実行したい作業を入力してください。"
-puts <<~EOS
-  install インストールとアンインストール
-  update パッケージリストのアップデート
-  upgrade パッケージのアップグレード
-EOS
+puts "What do you want to do?"
+puts <<~EOF
+  install : Install and Uninstall
+  update : Update Package List
+  upgrade : Upgrade Package
+EOF
 print "> "
 method = gets.chomp
 case method
