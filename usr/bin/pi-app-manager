@@ -10,11 +10,28 @@ require 'fileutils'
 require_relative '/etc/pi-app-manager/config'
 entry_extension = "entry"
 version = 0.1
+tmpdir = "/tmp/pi-app-manager"
+
+# スクリプトのアップデート
+def script_update
+  require 'rugged'
+  system("source /etc/os-release && echo ${VERSION_CODENAME} > /tmp/pi-app-manager/osversion.txt")
+  FileUtils.cd(tmpdir)
+  osversion = File.read("osversion.txt")
+  Dir.mkdir("scripts")
+  scriptdl = Rugged::Repository.clone_at("https://github.com/NSK-1010/pi-app-manager-scripts-ruby-#{osversion}", "scripts")
+  FileUtiles.mkdir_p(scriptdir)
+  FileUtils.mv("scripts/*", scriptdir + "/")
+  FileUtils.rm_r("scripts")
+  FileUtils.rm("osversion.txt")
+  FileUtils.cd(__dir__)
+end
 
 # インストールとアンインストール
 def install_uninstall
+  script_update()
   system("dpkg -l > /tmp/pi-app-manager/instaledlist.txt")
-  installedlist = File.read("/tmp/pi-app-manager/instaledlist.txt")
+  installedlist = File.read(tmpdir + "/instaledlist.txt")
   scripts = Dir.glob("#{scriptdir}/*.#{entry_extension}")
   require scripts
   for package in scripts.length do
@@ -39,6 +56,7 @@ def install_uninstall
     end
   end
   puts "処理完了"
+  File.delete(tmpdir + "/instaledlist.txt")
 end
 
 # アップデート
@@ -52,6 +70,7 @@ def upgrade
 end
 
 # welcome
+Dir.mkdir(tmpdir)
 puts "Welcome!"
 puts "実行したい作業を入力してください。"
 puts <<~EOS
