@@ -1,3 +1,7 @@
-# PiAppManager Config
+#!/usr/bin/env ruby
+
+# Pi App Manager Config
+# 2020-2021 Piano Nekomiya
+# Twitter: @PianoCat1010
 
 scriptdir = "/etc/pi-app-manager/softwares"
