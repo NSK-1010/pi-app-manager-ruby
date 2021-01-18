@@ -33,9 +33,10 @@ def install_uninstall
   system("dpkg -l > /tmp/pi-app-manager/instaledlist.txt")
   installedlist = File.read(tmpdir + "/instaledlist.txt")
   scripts = Dir.glob("#{scriptdir}/*.#{entry_extension}")
-  require scripts
+  load scripts
   for package in scripts.length do
     p name
+    p "Package Name: " package_name
     p "- " + description
     if installedlist.include?("#{package_name}") == true then
       puts "(Installed)"
@@ -44,14 +45,16 @@ def install_uninstall
     end
     p "\n"
   end
-  puts "Enter the software you want to install / uninstall, separated by spaces."
+  puts "Enter the package name you want to install / uninstall, separated by spaces."
   print "> "
   installpkg = gets.chomp.split(' ')
   puts "Starting..."
   for installpkgnum in installpkg.length do
-    if installedlist.include?("#{package_name}") == true then
+    if installedlist.include?("#{installpkg}") == true then
+      load '#{scriptdir}/#{installpkg}.#{entry_extension}'
       uninstall()
     else
+      load '#{scriptdir}/#{installpkg}.#{entry_extension}'
       install()
     end
   end
