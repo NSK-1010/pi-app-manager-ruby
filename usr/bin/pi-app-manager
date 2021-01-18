@@ -15,7 +15,9 @@ tmpdir = "/tmp/pi-app-manager"
 # スクリプトのアップデート
 def script_update
   require 'rugged'
-  system("source /etc/os-release && echo ${VERSION_CODENAME} > /tmp/pi-app-manager/osversion.txt")
+  #!/usr/bin/env bash
+  source /etc/os-release && echo ${VERSION_CODENAME} > /tmp/pi-app-manager/osversion.txt
+  #/usr/bin/env ruby
   FileUtils.cd(tmpdir)
   osversion = File.read("osversion.txt")
   Dir.mkdir("scripts")
